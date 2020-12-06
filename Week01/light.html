@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    div {
+      background-color: grey;
+      display: inline-block;
+      margin: 30px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+    }
+    .green.light {
+      background-color: green;
+    }
+    .yellow.light {
+      background-color: yellow;
+    }
+    .red.light {
+      background-color: red;
+    }
+  </style>
+  <body>
+    <div class="green"></div>
+    <div class="yellow"></div>
+    <div class="red"></div>
+  </body>
+  <script>
+    function green() {
+      let lights = document.getElementsByTagName("div");
+      for (let i = 0; i < 3; i++) {
+        lights[i].classList.remove("light");
+      }
+      document.getElementsByClassName("green")[0].classList.add("light");
+    }
+    function red() {
+      let lights = document.getElementsByTagName("div");
+      for (let i = 0; i < 3; i++) {
+        lights[i].classList.remove("light");
+      }
+      document.getElementsByClassName("red")[0].classList.add("light");
+    }
+    function yellow() {
+      let lights = document.getElementsByTagName("div");
+      for (let i = 0; i < 3; i++) {
+        lights[i].classList.remove("light");
+      }
+      document.getElementsByClassName("yellow")[0].classList.add("light");
+    }
+    function callbackFunc() {
+      green();
+      setTimeout(() => {
+        yellow();
+        setTimeout(() => {
+          red();
+          setTimeout(() => {
+            callbackFunc();
+          }, 1000);
+        }, 2000);
+      }, 3000);
+    }
+    // callbackFunc();
+    function sleep(timer) {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, timer);
+      });
+    }
+    function promiseFunc() {
+      green();
+      sleep(3000)
+        .then(() => {
+          yellow();
+          return sleep(2000);
+        })
+        .then(() => {
+          red();
+          return sleep(1000);
+        })
+        .then(promiseFunc);
+    }
+    // promiseFunc();
+    async function asyncFnc() {
+      green();
+      await sleep(3000);
+      yellow();
+      await sleep(2000);
+      red();
+      await sleep(1000);
+      asyncFnc();
+    }
+    asyncFnc();
+  </script>
+</html>
