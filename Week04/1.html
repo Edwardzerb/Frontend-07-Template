@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  let $ = Symbol('$');
+  class Trie {
+    constructor() {
+      this.root = Object.create(null);
+    }
+    insert(world) {
+      let node = this.root;
+      for(let c of world) {
+        if(!node[c])
+          node[c] = Object.create(null);
+        node = node[c];
+      }
+      if(!($ in  node)) {
+        node[$] = 0;
+      }
+      node[$] ++;
+    }
+    most() {
+      let max = 0;
+      let maxWorld = null;
+      let visit = (node, world) => {
+        if(node.$ && node.$ > max) {
+          max = node.$;
+          maxWorld = world;
+        }
+        for(let p in node) {
+          visit(node[p], world + p);
+        }
+      }
+      visit(this.root, '');
+      console.log(maxWorld);
+    }
+  }
+  
+  function randomWorld(length) {
+    let s = '';
+    for(let i = 0; i< length; i++) {
+      for(let i = 0; i < length; i++) {
+        s += String.fromCharCode(Math.random() * 26 + 'a'.charCodeAt(0));
+
+      }
+      return s;
+    }
+
+    let trie = new Trie();
+    for(let i = 0; i < 100000; i++) {
+      trie.insert(randomWorld(4));
+    }
+    console.log('Trie:', trie);
+  }
+  randomWorld();
+</script>
+</html>
